@@ -1,7 +1,7 @@
 +++
-title = "Debugging Kubernetes cluster"
+title = "Debugging Kubernetes cluster pt.1"
 date = "2021-10-19"
-description = "Troubleshooting steps to help you understand a fix some K8s issues"
+description = "Troubleshooting steps to help you understand a fix some K8s issues - part 1"
 nofeed = true
 math = true
 notaxonomy = false
