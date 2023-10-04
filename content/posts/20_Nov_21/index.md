@@ -18,37 +18,37 @@ hidemeta = false
 
 ### Requirements
 
-1. Install [Krew](https://krew.sigs.k8s.io/docs/user-guide/setup/install/?utm_source=thenewstack&utm_medium=website&utm_campaign=platform")
+**a.** Install [Krew](https://krew.sigs.k8s.io/docs/user-guide/setup/install/?utm_source=thenewstack&utm_medium=website&utm_campaign=platform")
 
-2. Install *resource-capacity* plugin
+**b.** Install *resource-capacity* plugin
 
 `kubectl krew install resource-capacity`
 
-3. Install *lineage* plugin
+**c.** Install *lineage* plugin
 
 `kubectl krew install lineage`
 
-4. Install [kail](https://github.com/boz/kail).
+**d.** Install [kail](https://github.com/boz/kail).
 
-5. Install *blame* plugin
+**e.** Install *blame* plugin
 
 `kubectl krew install blame`
 
 ### Troubleshooting commands
 
-1. `kubectl get events — field-selector type=Warning — all-namespaces`
+**a.** `kubectl get events — field-selector type=Warning — all-namespaces`
 
 ![Image alt](images/get_events.png)
 
 This command will show all warnings events in the cluster.
 
-2. `kubectl get nodes -o wide — label-columns topology.kubernetes.io/zone`
+**b.** `kubectl get nodes -o wide — label-columns topology.kubernetes.io/zone`
 
 ![Image alt](images/get_event_topoloy.png)
 
 This command will show any nodes that are not in a “ready” state, the version of kubelet or a different container runtime. Also, the parameter **zone** can show if any of your node problems are related to a specific zone.
 
-3. `kubectl resource-capacity — pods — util — sort cpu.util`
+**c.** `kubectl resource-capacity — pods — util — sort cpu.util`
 
 ![Image alt](images/resource_capacity.png)
 
@@ -56,7 +56,7 @@ Here we can see which pods are using more resources than they should be.
 
 Obs.: This plugin requires that you have the [metrics-server](https://github.com/kubernetes-sigs/metrics-server?utm_source=thenewstack&utm_medium=website&utm_campaign=platform) installed.
 
-4. `kubectl get all — show-labels`
+**d.** `kubectl get all — show-labels`
 
 ![Image alt](images/show_labels-1.png)
 
@@ -64,7 +64,7 @@ Obs.: This plugin requires that you have the [metrics-server](https://github.com
 
 This command will show the *pod-template-hash* which we can see if it matches between our deployment and pod.
 
-5. `kubectl lineage pod ${POD}`
+**e.** `kubectl lineage pod ${POD}`
 
 `kubectl lineage pod banana-app`
 
@@ -72,29 +72,34 @@ This command will show the *pod-template-hash* which we can see if it matches be
 
 The plugin *lineage* can show what created a resource in Kubernetes and what depends on it.
 
-6. `kail -n kube-system — since 1m`
+**f.** `kail -n kube-system — since 1m`
 
 ![Image alt](images/kube-system.png)
 
 This command will show all logs during the last minutes for the specific namespace, **kube-system**
 
-7. `kubectl get service -o wide`
+**g.** `kubectl get service -o wide`
 
 ![Image alt](images/get_service.png)
 
 Here we can see the services in the cluster, which we can check the type of service it is, if there’s an external IP address or load balancer, and what labels are used.
 
-8. `kubectl get endpointslices -o wide`
+**h.** `kubectl get endpointslices -o wide`
 
 This will show us each of our services in the namespace and which pod IP addresses are associated with that service.
 
 ![Image alt](images/get_end.png)
 
-9. `kubectl port-forward deploy $DEPLOYMENT $LOCAL_PORT:$POD_PORT`
+
+**i.** kubectl port-forward deploy $DEPLOYMENT $LOCAL_PORT:$POD_PORT
+
+`kubectl port-forward deploy $DEPLOYMENT $LOCAL_PORT:$POD_PORT`
 
 This command will let us bypass the load balancer or ingress controller to see if we can send traffic directly to one of the pods in the deployment.
 
-10. `kubectl blame pod $PODblame`
+**j.**  kubectl blame pod $PODblame**
+
+`kubectl blame pod banana-app`
 
 ![Image alt](images/blame.png)
 
