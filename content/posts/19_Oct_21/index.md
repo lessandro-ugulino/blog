@@ -1,7 +1,7 @@
 +++
 title = "Debugging Kubernetes cluster pt.1"
 date = "2021-10-19"
-description = "Troubleshooting steps to help you understand a fix some K8s issues - part 1"
+description = "Troubleshooting steps to help you understand and fix some K8s issues - part 1"
 nofeed = true
 math = true
 notaxonomy = false
@@ -18,7 +18,7 @@ This troubleshooting will focus on cluster operations. This will help you unders
 
 ## Related Articles
 
-[Debugging Kubernetes cluster — part2](https://medium.com/@lessandro.ugulino/debugging-kubernetes-cluster-pt-2-a160bf6b8cf2)
+[Debugging Kubernetes cluster — part2](https://blog.ugulino.com/posts/20_nov_21/)
 
 ## Commands
 
