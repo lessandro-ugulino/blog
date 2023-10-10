@@ -3,7 +3,7 @@ languageCode = "en-us"
 defaultContentLanguage = "en"
 title = "Lessandro"
 theme = "hugo-vitae"
-paginate = 5
+paginate = 8
 enableRobotsTXT = true
 
 copyright = "© Copyright | Lessandro Ugulino"
@@ -21,7 +21,7 @@ googleAnalytics = ""
 
 [params]
 	# Enable dark mode as default
-	#darkmode = true
+	darkmode = false
 
 	# Use homepage.md instead of a list of posts
 	homepage = false
@@ -41,9 +41,9 @@ url = "/"
 weight = 1
 
 [[menu.main]]
-#name = "All Posts"
-#url = "/post"
-#weight = 2
+name = "Curriculum"
+url = "https://lessandro.ugulino.com/"
+weight = 2
 
 [[menu.main]]
 #name = "About"

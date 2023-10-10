@@ -1,0 +1,131 @@
++++
+title = "Security Containers: Control Groups"
+date = "2023-10-10"
+description = "How cgroups works"
+nofeed = true
+math = true
+notaxonomy = false
+commentable = true
+hidden = false
+norobots = true
+nodate = false
+hidemeta = false
++++
+
+### Related Articles
+
+- [Let’s talk about Container Security](https://blog.ugulino.com/posts/28_feb_22/)
+
+- [Security Containers: System Call and Permissions](https://blog.ugulino.com/posts/12_apr_22/)
+
+
+Today, I'd like to talk about one of the fundamental building blocks that are used to make containers: **control groups**, as frequently know as **cgroups**.
+
+Basically, **cgroups** limit the resources, such as memory, CPU, and network input/output, that a group of process can use.
+
+> In terms of security, **cgroups** can ensure that one process can't affect the behaviour of the other process by hogging all the resources, for example, using all the CPU or memory to starve other applications.
+
+`cgroup` "How much you can use"
+
+`namespace` "How much you can see"
+
+Let's see how *cgroups* are organized.
+
+### Cgroup Hierarchies
+
+*Cgroup* controller manages the hierarchy for each type of resource. Any Linux process is a member of one *cgroup* of each type.
+
+The Linux kernel communicates information about *cgroups* through a set of pseudo-filesystems that usually is located at `/sys/fs/cgroup`.
+
+![Image alt](images/cgroup_ls.png)
+
+In terms of management, it'll involve reading and writing to the files and directories within these hierarchies.
+
+The below image describes the memory *cgroup*.
+
+![Image alt](images/memory_cgroup.png)
+
+Some of these files are writen by the Kernel and other can be modified. There's  no specific way to tell which are parameters and which are informational whithout consulting the [documentation](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/memory.html). The propose of some of these files' names are intuitive, for example, **memory.limit_in_bytes** holds a writable value that sets the amount of memory available to processes in the group; **memory.max_usage_in_bytes** reports the max memory usage within the group.
+
+If you want to limit memory usage for a process, you'll need to create a new *cgroup* and the assign the process to it.
+
+### Creating Cgroups
+
+When you create a subdirectory inside this memory directory, you're creating a *cgroup*, and the kernel will automatically populates the directory with the various files that represent parameters and statistics about the *cgroup*:
+
+![Image alt](images/new_cgroup.png)
+
+As you can see, some of these files hold parameters that'll define the limits (example: *memory.limit_in_bytes*) and others communicate statistics (example: *memory.usage_in_bytes*) about the current use of resources in the control group.
+
+The container [runtime](https://kubernetes.io/docs/setup/production-environment/container-runtimes/) will create new *cgroups* when you start a container. You can use the [lscgroup](https://linux.die.net/man/1/lscgroup) command to list all cgroups.
+
+Let's see at the difference in memory when you start a container.
+
+Take a snapshot of the memory cgroups:
+
+`lscgroup memory:/ > before.memory`
+
+Start a container:
+
+`kubectl run nginx --image=nginx`
+
+Take anoter snapshot of the memory cgroups and compare both:
+
+`lscgroup memory:/ > after.memory`
+
+`diff before.memory after.memory`
+
+![Image alt](images/diff_cgroups.png)
+
+While the container is still running, we can inspect the *cgroup* from the host:
+
+`ls docker/d46b4e91ea4f13aa86134306e364fb5906f184ade224911ebd52e4ff7f2fbd61`
+
+![Image alt](images/inspect_cgroup.png)
+
+The list inside the container is available from the `/proc` directory:
+
+![Image alt](images/cgroup_pod.png)
+
+Once you have a *cgroup*, you can modify parameters within it by writing to the appropriate files.
+
+### Setting Resource Limits
+
+The file **memory.limit_in_bytes** will show how much memory is available to the *cgroup*.
+
+![Image alt](images/mem_limits.png)
+
+By default the memory isn't limited, this number represents all the memory available to the virtual machine I'm using to run this container.
+
+As there is no limit for this parameter, a process is allowed to consume unlimited memory, or it could be compromised by [resource exhaustion attack](https://en.wikipedia.org/wiki/Resource_exhaustion_attack) that takes advantage of a memory leak to deliberately use as much memory as possible. You can reduce this kind of attack and ensure that other processes can carry on as normal by setting limits on the memory and other resources.
+
+You can restrict the memory running the below command or for [Kubernetes](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
+
+`docker run -m 512m -it --rm -d -p 8080:80 --name web nginx`
+
+`-m: memory`
+
+Now you'll find that the *memory.limit_in_bytes* parameter is approximately what you configured as the limit.
+
+![Image alt](images/mem_limits_new.png)
+
+### Assigning a Process to a Cgroup
+
+Similar to setting resource limits, assigining a process to a *cgroup* is a simple matter of writing its process ID into the *cgroup.procs* file for the *cgroup*.
+
+![Image alt](images/set_memory.png)
+
+The below command will write the process ID (1430, it's the process ID of a shell)
+
+![Image alt](images/id.png)
+
+The shell is now a member of a *cgroup*, with its memory limited to a little under **100kB**. When I run `ls` command the process gets killed when it attempts to exceed the memory limit.
+
+![Image alt](images/killed.png)
+
+### Cgroups V2
+
+Since 2016 there has been a version 2 of *cgroups*. The biggest difference is that in *cgroups* v2 a process can't join a different groups for a different controllers. In v1 a process could join `/sys/fs/cgroup/memory/mygroup` and `/sys/fs/cgroup/pids/yourgroup`. In v2 the process joins `/sys/fs/cgroup/ourgroup` and is subject to all the controllers for `ourgroup`.
+
+Akihiro Sudo summarized the new version [here](https://medium.com/nttlabs/cgroup-v2-596d035be4d7).
+
