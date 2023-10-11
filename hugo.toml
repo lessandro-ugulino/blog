@@ -34,6 +34,14 @@ googleAnalytics = "G-66BH1X41SS"
 # enable Javascript by setting to true
 enabled = false
 
+# Comment provider:
+#   disqus (https://disqus.com)
+#   commento (https://commento.io)
+engine = "disqus"
+
+[params.comments.disqus]
+shortname = "blog-ugulino-com" # Paste the shortname from your Disqus dashboard.
+
 # Navigation
 [[menu.main]]
 name = "Home"

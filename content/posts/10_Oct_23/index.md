@@ -127,3 +127,4 @@ Since 2016 there has been version 2 of *cgroups*. The biggest difference is that
 
 Akihiro Sudo summarized the new version [here](https://medium.com/nttlabs/cgroup-v2-596d035be4d7).
 
+{{ template "_internal/disqus.html" . }}
