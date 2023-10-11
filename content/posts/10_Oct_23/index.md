@@ -126,5 +126,3 @@ The shell is now a member of a *cgroup*, with its memory limited to a little und
 Since 2016 there has been version 2 of *cgroups*. The biggest difference is that in *cgroups* v2 a process can't join different groups for different controllers. In v1 a process could join `/sys/fs/cgroup/memory/mygroup` and `/sys/fs/cgroup/pids/yourgroup`. In v2 the process joins `/sys/fs/cgroup/ourgroup` and is subject to all the controllers for `ourgroup`.
 
 Akihiro Sudo summarized the new version [here](https://medium.com/nttlabs/cgroup-v2-596d035be4d7).
-
-{{ template "_internal/disqus.html" . }}
