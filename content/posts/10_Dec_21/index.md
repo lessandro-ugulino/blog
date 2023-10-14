@@ -28,7 +28,7 @@ This diagram will help you visualize the process.
 **Backup K8s cluster environment A**
 I’m assuming you already have a K8s cluster running workloads as below. Otherwise, you can follow this guide.
 
-:globe_with_meridians: [vagrant-k8s-ingress-nginx-automation](https://github.com/lessandro-ugulino/vagrant-k8s-ingress-nginx-automation?source=post_page-----31b5c24248e--------------------------------)
+Link: [vagrant-k8s-ingress-nginx-automation](https://github.com/lessandro-ugulino/vagrant-k8s-ingress-nginx-automation?source=post_page-----31b5c24248e--------------------------------)
 
 ![Image alt](images/get_all.png)
 
