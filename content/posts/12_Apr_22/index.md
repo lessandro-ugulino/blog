@@ -14,7 +14,7 @@ hidemeta = false
 
 ### Related Articles
 
-- [Security Containers: System Call and Permissions](https://blog.ugulino.com/posts/12_apr_22/)
+- [Let’s talk about Container Security](https://blog.ugulino.com/posts/28_feb_22/)
 
 - [Security Containers: Control Groups](https://blog.ugulino.com/posts/10_oct_23/)
 

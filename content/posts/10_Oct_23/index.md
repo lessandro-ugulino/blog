@@ -16,6 +16,8 @@ hidemeta = false
 
 - [Security Containers: System Call and Permissions](https://blog.ugulino.com/posts/12_apr_22/)
 
+- [Let’s talk about Container Security](https://blog.ugulino.com/posts/28_feb_22/)
+
 
 Today, I'd like to talk about one of the fundamental building blocks that are used to make containers: **control groups**, as frequently known as **cgroups**.
 
