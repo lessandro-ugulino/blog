@@ -1,7 +1,7 @@
 +++
 title = "Security Containers: Control Groups"
 date = "2023-10-10"
-description = "How cgroups works"
+description = "Cgroup can easily limit the resources by adding another security layer to your Kubernetes environment."
 nofeed = true
 math = true
 notaxonomy = false
